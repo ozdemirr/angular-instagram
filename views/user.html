@@ -1,0 +1,13 @@
+<div ng-controller="userController">
+
+    <ul class="grid" style="width:auto;">
+
+        <li ng-repeat="image in images">
+            <a href="{{image.link}}" target="_blank"><img ng-src="{{image.images.low_resolution.url}}" /></a>
+            <p>{{}}</p>
+        </li>
+    </ul>
+
+    <alert type="warning" ng-show="showAlert">This profile is hidden</alert>
+
+</div>

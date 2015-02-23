@@ -1,0 +1,22 @@
+<div ng-controller="searchTagController">
+
+    <form ng-submit="search()">
+
+
+        <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">#</span>
+            <input type="text" class="form-control" placeholder="type username and press enter" aria-describedby="basic-addon1" ng-model="tag">
+        </div>
+
+    </form>
+
+    <ul class="list" style="width:auto;">
+
+        <li ng-repeat="tag in tags">
+            <a href="#tag/{{tag.name}}">{{tag.name}}</a> ( Pictures count : {{tag.media_count}})
+        </li>
+    </ul>
+
+    <alert type="warning" ng-show="showAlert">There is no result !</alert>
+
+</div>

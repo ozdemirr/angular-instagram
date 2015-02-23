@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html ng-app="exampleApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title ng-bind="title">myApp</title>
+    <script src="assets/js/angular.js" type="text/javascript"></script>
+    <script src="assets/js/angular-route.js" type="text/javascript"></script>
+    <script src="assets/js/ui-bootstrap-custom-tpls-0.12.1.js" type="text/javascript"></script>
+    <script src="app/app.js" type="text/javascript"></script>
+    <script src="app/controllers.js" type="text/javascript"></script>
+    <script src="app/instagram.js" type="text/javascript"></script>
+    <link href="assets/css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" >
+    <link href="assets/css/custom.css" media="screen" rel="stylesheet" type="text/css" >
+</head>
+<body>
+
+<div class="container-fluid">
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#/">
+                    App
+                </a>
+
+                <a class="navbar-brand" href="#/popular">
+                    Popular
+                </a>
+                <a class="navbar-brand" href="#/findUser">
+                    Find User
+                </a>
+                <a class="navbar-brand" href="#/searchTag">
+                    Search Tag
+                </a>
+            </div>
+        </div>
+    </nav>
+
+        <ng-view></ng-view>
+
+
+</div>
+
+</body>
+</html>

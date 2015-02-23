@@ -1,0 +1,18 @@
+<div ng-controller="popularController">
+
+    <div class="bar">
+        <a class="list-icon" ng-class="{active: isLayout('list')}" ng-click="setLayout('list')"></a>
+        <a class="grid-icon" ng-class="{active: isLayout('grid')}" ng-click="setLayout('grid')"></a>
+        <a class="refresh-icon" ng-click="refresh()"></a>
+    </div>
+
+    <ul ng-class="{ 'grid' : isLayout('grid') , 'list' : isLayout('list') }">
+
+        <li ng-repeat="p in popularImages">
+            <a href="{{p.link}}" target="_blank"><img ng-src="{{p.images.low_resolution.url}}" /></a>
+            <p ng-show="isLayout('list')">{{p.caption.text}}</p>
+        </li>
+    </ul>
+
+
+</div>
