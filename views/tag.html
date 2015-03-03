@@ -1,9 +1,10 @@
-<div ng-controller="tagController">
+<div ng-controller="tagController" ng-init="getTagMedia()">
 
     <ul class="grid" style="width:auto;">
 
         <li ng-repeat="image in images">
-            <a href="{{image.link}}" target="_blank"><img ng-src="{{image.images.low_resolution.url}}" /></a>
+            <a ng-href="/#media/{{image.id}}/{{image.type}}"><img ng-src="{{image.images.low_resolution.url}}"/></a>
+
             <p>{{}}</p>
         </li>
     </ul>

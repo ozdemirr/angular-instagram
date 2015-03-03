@@ -1,54 +1,92 @@
-var app = angular.module('exampleApp',['exampleApp.controllers', 'instagramService', 'ui.bootstrap', 'ngRoute']);
+var app = angular.module('instagramApp', ['instagramApp.controllers', 'instagramService', 'ui.bootstrap', 'ui.router',
+    'Authentication', 'directives', 'ngCookies']);
 
-app.constant('instagramCredentials',
-{
-apiUrl:'https://api.instagram.com/v1/',
-clientId:'e33dbf0e5d404916b8624295ffd5779f'
-}
+app.constant('instagramApiConfig', {
+        apiUrl: 'https://api.instagram.com/v1/',
+        clientId: '48252118e7924df8be40fb498d0a87c8',
+        callback: 'http://ozdemirr.github.io/angular-instagram/callback.html'
+    }
 );
 
-app.config(['$routeProvider',
-    function($routeProvider) {
-        $routeProvider.
-            when('/index', {
-                title: 'Home',
-                templateUrl: 'views/index.html',
-                controller: 'IndexController'
-            }).
-            when('/user/:id', {
-                title: 'User',
-                templateUrl: 'views/user.html',
-                controller: 'userController'
-            }).
-            when('/findUser', {
-                title: 'Find User',
-                templateUrl: 'views/findUser.html',
-                controller: 'userFindController'
-            }).
-            when('/searchTag', {
-                title: 'Search Tag',
-                templateUrl: 'views/searchTag.html',
-                controller: 'searchTagController'
-            }).
-            when('/tag/:name', {
-                title: 'Tag',
-                templateUrl: 'views/tag.html',
-                controller: 'tagController'
-            }).
-            when('/popular', {
-                title: 'Popular Pictures',
-                templateUrl: 'views/popular.html',
-                controller: 'popularController'
-            }).
-            otherwise({
-                redirectTo: '/index'
-            });
-    }]);
+app.config(['$httpProvider', function($httpProvider) {
+    $httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+}
+]);
 
+app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
 
-//page title change event
-app.run(['$location', '$rootScope', function($location, $rootScope) {
-    $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
-        $rootScope.title = current.$$route.title;
-    });
+    // Redirect any unresolved url
+    $urlRouterProvider.otherwise("/index");
+
+    $stateProvider
+
+        .state('index', {
+            url: "/index",
+            templateUrl: "views/index.html",
+            data: {pageTitle: 'HomePage', pageSubTitle: ''},
+            controller: "IndexController"
+        })
+
+        .state("user", {
+            url: "/user/:userId/:userName",
+            templateUrl: "views/user.html",
+            data: {pageTitle: 'User', pageSubTitle: ''},
+            controller: "userController"
+        })
+
+        .state('searchUser', {
+            url: "/searchUser",
+            templateUrl: "views/searchUser.html",
+            data: {pageTitle: 'Search User', pageSubTitle: ''},
+            controller: "UserSearchController"
+        })
+
+        .state('searchTag', {
+            url: "/searchTag",
+            templateUrl: "views/searchTag.html",
+            data: {pageTitle: 'Search Tag', pageSubTitle: ''},
+            controller: "searchTagController"
+        })
+
+        .state("tag", {
+            url: "/tag/:tagName",
+            templateUrl: "views/tag.html",
+            data: {pageTitle: 'Tag', pageSubTitle: ''},
+            controller: "tagController"
+        })
+
+        .state('popular', {
+            url: "/popular",
+            templateUrl: "views/popular.html",
+            data: {pageTitle: 'Popular Images', pageSubTitle: ''},
+            controller: "popularController"
+        })
+
+        .state("media", {
+            url: "/media/:mediaId/:mediaType",
+            templateUrl: "views/media.html",
+            data: {pageTitle: 'Media', pageSubTitle: ''},
+            controller: "mediaController"
+        })
+
+        .state("login", {
+            url: "/login/:accessToken",
+            templateUrl: "views/login.html",
+            data: {pageTitle: 'Login', pageSubTitle: ''},
+            controller: "loginController"
+        })
+
+}]);
+
+app.run(["$rootScope", 'AuthenticationService', 'instagramApi', 'instagramApiConfig', '$state', function ($rootScope, AuthenticationService, instagramApi, instagramApiConfig, $state) {
+
+    instagramApi.setCredentials(instagramApiConfig);
+
+    AuthenticationService.start(instagramApi);
+
+    $rootScope.$state = $state;
+
+    $rootScope.errorCodes = instagramApi.errorCodes;
+
 }]);

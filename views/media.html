@@ -1,0 +1,67 @@
+<div ng-controller="mediaController" ng-init="getMedia()">
+
+    <div class="row text-center">
+
+        <!--Image-->
+        <div class="col-md-7">
+
+            <img ng-src="{{media.images.standard_resolution.url}}">
+
+        </div>
+
+        <!--Comment and General Info Box-->
+        <div class="col-md-5">
+
+            <div class="detailBox">
+                <div class="titleBox">
+                    <a ng-href="#/user/{{media.user.id}}/{{media.user.username}}"> <label style="cursor: pointer;">{{media.user.username}}</label> </a>
+
+                </div>
+                <div class="commentBox">
+                    <p class="taskDescription" ng-if="media.created_time">{{media.created_time * 1000 | date:'MMM d, y HH:mm:ss'}}</p>
+                    <p class="taskDescription">{{media.caption.text}}</p>
+                    <p class="taskDescription">Filter : {{media.filter}}</p>
+                    <a class="btn btn-primary" ng-href="{{media.images.standard_resolution.url}}" download>Download</a>
+                    <button class="btn btn-info" ng-click="giveLike(media.id)" ng-show="false">Like It</button>
+                </div>
+
+                <div class="likesBox">
+                    <span class="badge">{{media.likes.count}}</span>
+                    <span class="glyphicon glyphicon-thumbs-up"></span>
+                    <a ng-repeat="like in media.likes.data" class="label label-success" style="margin: 5px;" ng-href="#user/{{like.id}}/{{like.username}}">
+                        {{like.username}}
+                    </a>
+
+                </div>
+
+                <div class="actionBox">
+                    <ul class="commentList">
+                        <li ng-repeat="comment in media.comments.data">
+                            <div class="commenterImage">
+                                <img ng-src="{{comment.from.profile_picture}}" />
+
+                            </div>
+                            <div class="commentText">
+                                <a ng-href="#/user/{{comment.from.id}}/{{comment.from.username}}" class="label label-info">{{comment.from.username}}</a>
+                                <p class="">{{comment.text}}</p> <span class="date sub-text">{{comment.created_time * 1000 | date:'MMM d, y HH:mm:ss'}}</span>
+
+                            </div>
+                        </li>
+
+                    </ul>
+                    <!--<form class="form-inline" role="form">-->
+                        <!--<div class="form-group">-->
+                            <!--<input class="form-control" type="text" placeholder="Your comments" ng-model="comment"/>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<button class="btn btn-default" ng-click="addComment()">Add</button>-->
+                        <!--</div>-->
+                    <!--</form>-->
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

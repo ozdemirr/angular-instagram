@@ -1,13 +1,62 @@
-<div ng-controller="userController">
+<div ng-controller="userController" ng-init="getUserProfile()">
 
-    <ul class="grid" style="width:auto;">
+    <div class="row">
 
-        <li ng-repeat="image in images">
-            <a href="{{image.link}}" target="_blank"><img ng-src="{{image.images.low_resolution.url}}" /></a>
-            <p>{{}}</p>
-        </li>
-    </ul>
+        <div class="col-md-2">
 
-    <alert type="warning" ng-show="showAlert">This profile is hidden</alert>
+            <div id="sidebar-wrapper">
+
+                <div collapse="isCollapsed" ng-show="user">
+                    <div class="well well-sm">
+                        <img ng-src="{{user.profile_picture}}">
+                        <span class="label label-primary">{{user.full_name}}</span>
+
+                        <p>{{user.bio}}</p>
+                    </div>
+                </div>
+
+                <ul class="sidebar-nav">
+                    <li class="sidebar-brand">
+                        {{userName}}
+                    </li>
+                    <li ng-show="user">
+                        <a href="#user/{{userId}}/{{userName}}/followers">Followers <span class="badge inline">{{user.counts.followed_by}}</span></a>
+                    </li>
+                    <li ng-show="user">
+                        <a href="#user/{{userId}}/{{userName}}/following">Following <span class="badge inline">{{user.counts.follows}}</span></a>
+                    </li>
+                    <li ng-show="user">
+                        Media <span class="badge inline">{{user.counts.media}}</span>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="col-md-10">
+
+            <div class="col-md-3" ng-repeat="image in images">
+
+                <div class="thumbnail">
+
+                    <a class="thumbnail" ng-href="#media/{{image.id}}/{{image.type}}">
+                        <img ng-src="{{image.images.low_resolution.url}}">
+                    </a>
+
+                    <div class="caption">
+                        <p class="text-center">{{image.created_time * 1000 | date:'MMM d, y HH:mm:ss'}}</p>
+                        <span class="glyphicon glyphicon-thumbs-up"> {{image.likes.count}}</span>
+                        <span class="glyphicon glyphicon-pencil pull-right"> {{image.comments.count}}</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <error/>
 
 </div>

@@ -1,11 +1,12 @@
-<div ng-controller="userFindController">
+<div ng-controller="UserSearchController">
 
     <form ng-submit="search()">
 
 
         <div class="input-group">
             <span class="input-group-addon" id="basic-addon1">@</span>
-            <input type="text" class="form-control" placeholder="type username and press enter" aria-describedby="basic-addon1" ng-model="username">
+            <input type="text" class="form-control" placeholder="type username and press enter"
+                   aria-describedby="basic-addon1" ng-model="username">
         </div>
 
     </form>
@@ -13,13 +14,18 @@
     <ul class="list" style="width:auto;">
 
         <li ng-repeat="user in users">
-            <a href="#user/{{user.id}}"><img ng-src="{{user.profile_picture}}" /></a>
+            <a href="#user/{{user.id}}/{{user.username}}"><img ng-src="{{user.profile_picture}}"/></a>
+
             <p>{{user.username}}</p>
+
             <p>{{user.full_name}}</p>
+
             <p>{{user.bio}}</p>
+
             <p>{{user.website}}</p>
         </li>
     </ul>
 
+    <error/>
 
 </div>
