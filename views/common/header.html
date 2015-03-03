@@ -1,0 +1,74 @@
+<nav ng-controller="navController">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav topnav navbar-left">
+            <li><a href="#/" class="topnav_home">&nbsp;</a></li>
+            <li><a href="#/popular" ng-class="{ 'topnav_active': $state.current.name == 'popular' }">Popular</a></li>
+            <li><a href="#/searchUser" ng-class="{ 'topnav_active': $state.current.name == 'searchUser' }">Search
+                User</a></li>
+            <li><a href="#/searchTag" ng-class="{ 'topnav_active': $state.current.name == 'searchTag' }">Search Tag</a>
+            </li>
+        </ul>
+
+
+        <ul class="nav navbar-nav navbar-right" style="margin-right: 0px;" ng-show="isLoggedIn()">
+
+            <!--<li dropdown>-->
+            <!--<a href="#" class="dropdown-toggle" dropdown-toggle ng-disabled="disabled">-->
+            <!--<span class="glyphicon glyphicon-comment" style="margin-right:5px;"></span>Chats <span class="label label-primary">42</span>-->
+            <!--</a>-->
+                <!--<ul class="dropdown-menu">-->
+                    <!--<li><a href="#"><span class="label label-warning">7:00 AM</span>Hi :)</a></li>-->
+
+                    <!--<li class="divider"></li>-->
+                    <!--<li><a href="#" class="text-center">View All</a></li>-->
+                <!--</ul>-->
+            <!--</li>-->
+
+            <li dropdown is-open="status.isopen">
+
+                <a href="#" class="dropdown-toggle" dropdown-toggle ng-disabled="disabled" style="padding-top: 8px;padding-bottom: 6px;">
+                <img ng-src="{{user.profile_picture}}" class="img-circle" style="width: 35px;margin-right: 10px;">
+                <strong>{{user.username}}</strong>
+                <span class="glyphicon glyphicon-chevron-down"></span>
+                </a>
+
+                <ul class="dropdown-menu">
+                    <li>
+                        <div class="navbar-login">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <p class="text-center">
+                                        <img ng-src="{{user.profile_picture}}" class="img-circle" style="width: 84px;margin-right: 10px;">
+
+                                    </p>
+                                </div>
+                                <div class="col-lg-8">
+                                    <p class="text-left"><strong>{{user.full_name}}</strong></p>
+                                    <p class="text-left small">{{user.bio}}</p>
+                                    <p class="text-left">
+                                        <a href="#" class="btn btn-primary btn-block btn-sm" ng-click="refresh()">Refresh</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <div class="navbar-login navbar-login-session">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <p>
+                                        <a href="#" class="btn btn-danger btn-block" ng-click="signOut()">Sign Out</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+
+    </div>
+
+</nav>

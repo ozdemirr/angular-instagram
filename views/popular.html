@@ -1,18 +1,29 @@
-<div ng-controller="popularController">
+<div ng-controller="popularController" ng-init="refresh()">
 
-    <div class="bar">
+    <div class="row container-fluid">
+
+    <div class="bar col-md-12">
         <a class="list-icon" ng-class="{active: isLayout('list')}" ng-click="setLayout('list')"></a>
         <a class="grid-icon" ng-class="{active: isLayout('grid')}" ng-click="setLayout('grid')"></a>
         <a class="refresh-icon" ng-click="refresh()"></a>
     </div>
 
-    <ul ng-class="{ 'grid' : isLayout('grid') , 'list' : isLayout('list') }">
+    <ul ng-class="{ 'grid' : isLayout('grid') , 'list' : isLayout('list') }" class="col-md-12">
 
-        <li ng-repeat="p in popularImages">
-            <a href="{{p.link}}" target="_blank"><img ng-src="{{p.images.low_resolution.url}}" /></a>
+        <li ng-repeat="p in popularImages" ng-class="{ 'col-md-3' : isLayout('grid')}">
+
+               <div ng-class="{ 'thumbnail' : isLayout('grid')}">
+
+                  <a ng-href="/#media/{{p.id}}/{{p.type}}"><img ng-src="{{p.images.low_resolution.url}}"/></a>
+
+               </div>
+
             <p ng-show="isLayout('list')">{{p.caption.text}}</p>
+
         </li>
+
     </ul>
 
+    </div>
 
 </div>

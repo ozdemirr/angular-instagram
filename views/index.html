@@ -1,8 +1,65 @@
-<div class="row" ng-controller="IndexController">
+<div ng-controller="IndexController">
 
-    <div class="col-md-12">
+    <div class="timeline" ng-show="isLoggedIn()" ng-init="isLoggedIn() ? refreshFeed() : null">
 
-        <div class="well well-lg text-center">Welcome to Instagram App, You can try it by click navbar items :)</div>
+        <div class="row container-fluid">
+
+            <div class="row text-center margin-bottom-50" ng-repeat="media in feed">
+
+                <!--Image-->
+                <div class="col-md-7">
+
+                    <a ng-href="/#media/{{media.id}}/{{media.type}}"><img ng-src="{{media.images.standard_resolution.url}}"></a>
+
+                </div>
+
+                <!--Comment and General Info Box-->
+                <div class="col-md-5">
+
+                    <div class="detailBox">
+                        <div class="titleBox">
+                            <a ng-href="#/user/{{media.user.id}}/{{media.user.username}}"> <label style="cursor: pointer;">{{media.user.username}}</label> </a>
+
+                        </div>
+                        <div class="commentBox">
+                            <p class="taskDescription" ng-if="media.created_time">{{media.created_time * 1000 | date:'MMM d, y HH:mm:ss'}}</p>
+                            <p class="taskDescription">{{media.caption.text}}</p>
+                            <p class="taskDescription">Filter : {{media.filter}}</p>
+                            <a class="btn btn-primary" ng-href="{{media.images.standard_resolution.url}}" download>Download</a>
+                            <button class="btn btn-info" ng-click="giveLike(media.id)" ng-show="false">Like It</button>
+                        </div>
+
+                        <div class="likesBox">
+                            <span class="badge">{{media.likes.count}}</span>
+                            <span class="glyphicon glyphicon-thumbs-up"></span>
+                            <a ng-repeat="like in media.likes.data" class="label label-success" style="margin: 5px;" ng-href="#user/{{like.id}}/{{like.username}}">
+                                {{like.username}}
+                            </a>
+
+                        </div>
+
+                        <div class="actionBox">
+                            <ul class="commentList">
+                                <li ng-repeat="comment in media.comments.data">
+                                    <div class="commenterImage">
+                                        <img ng-src="{{comment.from.profile_picture}}" />
+
+                                    </div>
+                                    <div class="commentText">
+                                        <a ng-href="#/user/{{comment.from.id}}/{{comment.from.username}}" class="label label-info">{{comment.from.username}}</a>
+                                        <p class="">{{comment.text}}</p> <span class="date sub-text">{{comment.created_time * 1000 | date:'MMM d, y HH:mm:ss'}}</span>
+
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 
