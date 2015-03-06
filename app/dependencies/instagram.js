@@ -39,7 +39,7 @@ angular.module('instagramService', []).factory('instagramApi', function ($http) 
 
     };
 
-    instagram.getUserSelf = function ( callback) {
+    instagram.getUserSelf = function (callback) {
 
         endPoint = apiUrl + "users/self/?"+instagram.getAuth() + callbackString;
 
@@ -49,9 +49,13 @@ angular.module('instagramService', []).factory('instagramApi', function ($http) 
 
     };
 
-    instagram.userSelfFeed = function(callback){
+    instagram.userSelfFeed = function(callback, nextMaxId){
 
         endPoint = apiUrl + "users/self/feed?"+ instagram.getAuth() + callbackString;
+
+        if(nextMaxId != null) {
+            endPoint = apiUrl + "users/self/feed?" + instagram.getAuth() + "&max_id=" + nextMaxId + callbackString;
+        }
 
         $http.jsonp(endPoint).success(function (response) {
             callback(response);
@@ -59,9 +63,13 @@ angular.module('instagramService', []).factory('instagramApi', function ($http) 
 
     };
 
-    instagram.getRecentMedia = function (userId, callback) {
+    instagram.getRecentMedia = function (userId, callback, nextMaxId) {
 
         endPoint = apiUrl + "users/" + userId + "/media/recent/?" + instagram.getAuth() + callbackString;
+
+        if(nextMaxId != null) {
+            endPoint = apiUrl + "users/" + userId + "/media/recent/?" + instagram.getAuth() + "&max_id=" + nextMaxId + callbackString;
+        }
 
         $http.jsonp(endPoint).success(function (response) {
             callback(response);
@@ -82,6 +90,59 @@ angular.module('instagramService', []).factory('instagramApi', function ($http) 
     instagram.getUserLiked = function(callback){
 
         endPoint = apiUrl + "users/self/media/liked?" + instagram.getAuth() + callbackString;
+
+        $http.jsonp(endPoint).success(function (response) {
+            callback(response);
+        });
+
+    };
+
+    instagram.checkCredentials = function(callback){
+
+        instagram.getUserSelf(function(response){
+
+            if(response.meta.code == 400) {
+
+                callback(false);
+
+            }else{
+
+                callback(true);
+
+            }
+
+        });
+
+    };
+
+    //relationships
+    instagram.getFollows = function(userId, callback){
+
+        if(userId == null) {userId = "self";}
+
+        endPoint = apiUrl + "users/" + userId + "/follows?" + instagram.getAuth() + callbackString;
+
+        $http.jsonp(endPoint).success(function (response) {
+            callback(response);
+        });
+
+    };
+
+    instagram.getFollowedBy = function(userId, callback){
+
+        if(userId == null) {userId = "self";}
+
+        endPoint = apiUrl + "users/" + userId + "/followed-by?" + instagram.getAuth() + callbackString;
+
+        $http.jsonp(endPoint).success(function (response) {
+            callback(response);
+        });
+
+    };
+
+    instagram.getRequestedBy = function(callback){
+
+        endPoint = apiUrl + "users/self/requested-by?" + instagram.getAuth() + callbackString;
 
         $http.jsonp(endPoint).success(function (response) {
             callback(response);
