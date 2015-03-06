@@ -1,6 +1,6 @@
 var instagramAppControllers = angular.module('instagramApp.controllers', []);
 
-var AppController = instagramAppControllers.controller('AppController', function ($scope, $state, AuthenticationService, instagramApi) {
+var AppController = instagramAppControllers.controller('AppController', function ($rootScope, $scope, $state, AuthenticationService, instagramApi) {
 
     $scope.isLoggedIn = function(){
 
@@ -14,16 +14,20 @@ var AppController = instagramAppControllers.controller('AppController', function
 
     };
 
-    //common methods
-    $scope.giveLike = function(mediaId){
+    //common variables
+    $rootScope.authLink = AuthenticationService.getAuthLink();
 
-        instagramApi.giveLike(mediaId,function(response){
+    if($rootScope.globals.currentUser) {
 
-            console.log(response);
+        AuthenticationService.getRequestedBy(function(response){
+
+            $scope.serviceMeta = response.meta;
+
+            $rootScope.userRequests = response.data;
 
         });
 
-    };
+    }
 
 });
 
@@ -64,19 +68,25 @@ var indexController = instagramAppControllers.controller('IndexController', func
 
     $scope.serviceMeta = {};
 
-    $scope.next_url = "";
+    $scope.feed = [];
 
-    $scope.refreshFeed = function(){
+    $scope.refreshFeed = function(nextMaxId){
 
         instagramApi.userSelfFeed(function(response){
 
             $scope.serviceMeta = response.meta;
 
-            $scope.feed = response.data;
+            $scope.feed = $scope.feed.concat(response.data);
 
-            $scope.next_url = response.next_url;
+            $scope.next_max_id = response.pagination.next_max_id;
 
-        });
+        }, nextMaxId);
+
+    };
+
+    $scope.loadMore = function(){
+
+        $scope.refreshFeed($scope.next_max_id);
 
     };
 
@@ -126,23 +136,13 @@ var popularController = instagramAppControllers.controller('popularController', 
             $scope.serviceMeta = response.meta;
 
             $scope.popularImages = response.data;
-                console.log($scope.popularImages);
+
         });
     };
 
 });
 
 var UserSearchController = instagramAppControllers.controller('UserSearchController', function ($scope, instagramApi) {
-
-    $scope.layout = 'grid';
-
-    $scope.setLayout = function (layout) {
-        $scope.layout = layout;
-    };
-
-    $scope.isLayout = function (layout) {
-        return $scope.layout == layout;
-    };
 
     $scope.users = [];
 
@@ -163,6 +163,16 @@ var UserSearchController = instagramAppControllers.controller('UserSearchControl
 });
 
 var userController = instagramAppControllers.controller('userController', function ($scope, instagramApi, $stateParams) {
+
+    $scope.layout = 'media';
+
+    $scope.setLayout = function (layout) {
+        $scope.layout = layout;
+    };
+
+    $scope.isLayout = function (layout) {
+        return $scope.layout == layout;
+    };
 
     $scope.userId = $stateParams.userId;
 
@@ -190,15 +200,53 @@ var userController = instagramAppControllers.controller('userController', functi
 
     };
 
-    $scope.getRecentMedia = function () {
+    $scope.getRecentMedia = function (nextMaxId) {
+
+        $scope.setLayout('media');
 
         instagramApi.getRecentMedia($scope.userId, function (response) {
 
             $scope.serviceMeta = response.meta;
 
-            $scope.images = response.data;
+            $scope.images = $scope.images.concat(response.data);
+
+            $scope.next_max_id = response.pagination.next_max_id;
+
+        }, nextMaxId);
+
+    };
+
+    $scope.getFollows = function(){
+
+        $scope.setLayout('following');
+
+        instagramApi.getFollows($scope.userId, function(response){
+
+            $scope.serviceMeta = response.meta;
+
+            $scope.follows = response.data;
 
         });
+
+    };
+
+    $scope.getFollowedBy = function(){
+
+        $scope.setLayout('followed');
+
+        instagramApi.getFollowedBy($scope.userId, function(response){
+
+            $scope.serviceMeta = response.meta;
+
+            $scope.followedBy = response.data;
+
+        });
+
+    };
+
+    $scope.loadMore = function(){
+
+        $scope.getRecentMedia($scope.next_max_id);
 
     };
 
@@ -269,6 +317,8 @@ var tagController = instagramAppControllers.controller('tagController', function
             $scope.serviceMeta = response.meta;
 
             $scope.images = response.data;
+
+            $scope.next_max_id = response.pagination.next_max_id;
 
         });
 

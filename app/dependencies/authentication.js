@@ -8,12 +8,14 @@ Authentication.factory('AuthenticationService',
 
             var providerService = {};
 
-            service.authLink = "";
-
             service.start = function (provider) {
 
                 if(provider) {
+
                     providerService = provider;
+
+                    service.authLink = providerService.getAuthLink();
+
                 }
 
                 $rootScope.globals = $cookieStore.get('globals') || {};
@@ -22,11 +24,22 @@ Authentication.factory('AuthenticationService',
 
                     providerService.setAuth(service.getCurrentUser().access_token);
 
+                        //check user already sign in to app
+                        service.checkCredentials(function(result){
+
+                            if(!result) {
+
+                                service.ClearCredentials();
+
+                            }
+
+                        });
+                        //check user already sign in to app
+
+
                 } else {
 
                     providerService.setAuth();
-
-                    service.authLink = providerService.getAuthLink();
 
                 }
 
@@ -70,11 +83,12 @@ Authentication.factory('AuthenticationService',
 
             };
 
+            //set from zero or update
             service.SetCredentials = function (user) {
 
                 $rootScope.globals = {
                     currentUser: {
-                        access_token : $rootScope.access_token,
+                        access_token : $rootScope.access_token || $cookieStore.get('globals').currentUser.access_token,
                         username: user.username,
                         userId: user.id,
                         profile_picture: user.profile_picture,
@@ -92,7 +106,27 @@ Authentication.factory('AuthenticationService',
 
                 $rootScope.globals = {};
                 $cookieStore.remove('globals');
-                service.start();
+                providerService.setAuth();
+
+            };
+
+            service.checkCredentials = function(callback){
+
+                providerService.checkCredentials(function(response){
+
+                    callback(response);
+
+                });
+
+            };
+
+            service.getRequestedBy = function(callback){
+
+                providerService.getRequestedBy(function(response){
+
+                    callback(response);
+
+                });
 
             };
 

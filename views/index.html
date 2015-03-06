@@ -61,6 +61,39 @@
 
         </div>
 
+
+        <load-more />
+
     </div>
+
+    <!--if user not logged in-->
+    <div ng-show="!isLoggedIn()">
+
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-4"></div>
+
+                <form class="form-signin mg-btm col-md-4">
+                    <h3 class="heading-desc text-center">
+                        Connect your social network profile to use this app
+                        </h3>
+                    <div class="social-box">
+                        <div class="row mg-btm">
+                            <div class="col-md-12">
+                                <a ng-href="{{authLink}}" class="btn btn-primary btn-block">
+                                    <i class="icon-facebook"></i> Login with Instagram
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <error/>
 
 </div>

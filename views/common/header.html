@@ -1,4 +1,4 @@
-<nav ng-controller="navController">
+<nav ng-controller="navController" class="navbar-fixed-top">
     <div class="container-fluid">
         <ul class="nav navbar-nav topnav navbar-left">
             <li><a href="#/" class="topnav_home">&nbsp;</a></li>
@@ -12,17 +12,19 @@
 
         <ul class="nav navbar-nav navbar-right" style="margin-right: 0px;" ng-show="isLoggedIn()">
 
-            <!--<li dropdown>-->
-            <!--<a href="#" class="dropdown-toggle" dropdown-toggle ng-disabled="disabled">-->
-            <!--<span class="glyphicon glyphicon-comment" style="margin-right:5px;"></span>Chats <span class="label label-primary">42</span>-->
-            <!--</a>-->
-                <!--<ul class="dropdown-menu">-->
-                    <!--<li><a href="#"><span class="label label-warning">7:00 AM</span>Hi :)</a></li>-->
-
-                    <!--<li class="divider"></li>-->
-                    <!--<li><a href="#" class="text-center">View All</a></li>-->
-                <!--</ul>-->
-            <!--</li>-->
+            <li dropdown ng-show="userRequests.length">
+            <a href="#" class="dropdown-toggle" dropdown-toggle>
+            <span class="glyphicon glyphicon-bell" style="margin-right:5px;"></span>Requests <span class="label label-primary">{{userRequests.length}}</span>
+            </a>
+                <ul class="dropdown-menu" style="min-width: 250px;">
+                    <li ng-repeat="request in userRequests">
+                        <img class="img-circle" ng-src="{{request.profile_picture}}" style="width: 50px;margin-left: 10px;">
+                        <span class="label label-primary">{{request.username}}</span>
+                        <span class="glyphicon glyphicon-ok-circle"></span>
+                        <span class="glyphicon glyphicon-ban-circle"></span>
+                    </li>
+                </ul>
+            </li>
 
             <li dropdown is-open="status.isopen">
 
@@ -38,15 +40,16 @@
                             <div class="row">
                                 <div class="col-lg-4">
                                     <p class="text-center">
+                                        <a ng-href="/#/user/{{user.userId}}/{{user.username}}">
                                         <img ng-src="{{user.profile_picture}}" class="img-circle" style="width: 84px;margin-right: 10px;">
-
+                                        </a>
                                     </p>
                                 </div>
                                 <div class="col-lg-8">
                                     <p class="text-left"><strong>{{user.full_name}}</strong></p>
                                     <p class="text-left small">{{user.bio}}</p>
                                     <p class="text-left">
-                                        <a href="#" class="btn btn-primary btn-block btn-sm" ng-click="refresh()">Refresh</a>
+                                        <a href="" class="btn btn-primary btn-block btn-sm" ng-click="refresh()">Refresh</a>
                                     </p>
                                 </div>
                             </div>

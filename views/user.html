@@ -1,41 +1,39 @@
-<div ng-controller="userController" ng-init="getUserProfile()">
+<div class="row" ng-controller="userController" ng-init="getUserProfile()">
 
-    <div class="row">
+    <div class="col-md-2">
 
-        <div class="col-md-2">
+        <div id="sidebar-wrapper">
+            <div collapse="isCollapsed" ng-show="user">
+                <div class="well well-sm">
+                    <img ng-src="{{user.profile_picture}}">
+                    <span class="label label-primary">{{user.full_name}}</span>
 
-            <div id="sidebar-wrapper">
-
-                <div collapse="isCollapsed" ng-show="user">
-                    <div class="well well-sm">
-                        <img ng-src="{{user.profile_picture}}">
-                        <span class="label label-primary">{{user.full_name}}</span>
-
-                        <p>{{user.bio}}</p>
-                    </div>
+                    <p>{{user.bio}}</p>
                 </div>
-
-                <ul class="sidebar-nav">
-                    <li class="sidebar-brand">
-                        {{userName}}
-                    </li>
-                    <li ng-show="user">
-                        <a href="#user/{{userId}}/{{userName}}/followers">Followers <span class="badge inline">{{user.counts.followed_by}}</span></a>
-                    </li>
-                    <li ng-show="user">
-                        <a href="#user/{{userId}}/{{userName}}/following">Following <span class="badge inline">{{user.counts.follows}}</span></a>
-                    </li>
-                    <li ng-show="user">
-                        Media <span class="badge inline">{{user.counts.media}}</span>
-                    </li>
-                </ul>
             </div>
 
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    {{userName}}
+                </li>
+                <li ng-show="user">
+                    <a ng-click="getFollowedBy();">Followers <span class="badge inline">{{user.counts.followed_by}}</span></a>
+                </li>
+                <li ng-show="user">
+                    <a ng-click="getFollows();">Following <span class="badge inline">{{user.counts.follows}}</span></a>
+                </li>
+                <li ng-show="user">
+                    <a ng-click="getRecentMedia();">Media <span class="badge inline">{{user.counts.media}}</span></a>
+                </li>
+            </ul>
         </div>
 
-        <div class="col-md-10">
+    </div>
 
-            <div class="col-md-3" ng-repeat="image in images">
+
+    <div class="col-md-10" ng-show="isLayout('media')">
+
+            <div class="col-md-3" ng-repeat="image in images | unique:'id'">
 
                 <div class="thumbnail">
 
@@ -53,10 +51,42 @@
 
             </div>
 
+    </div>
+
+
+    <div class="col-md-10" ng-show="!isLayout('media')">
+
+        <div class="row container-fluid">
+
+            <ul class="list" class="col-md-12" ng-show="isLayout('following')">
+
+                <li ng-repeat="f in follows | unique:'id'">
+
+                    <a ng-href="/#user/{{f.id}}/{{f.username}}"><img ng-src="{{f.profile_picture}}"/></a>
+                    <p>{{f.full_name}}</p>
+                    <p>{{f.bio}}</p>
+
+                </li>
+
+            </ul>
+
+            <ul class="list" class="col-md-12" ng-show="isLayout('followed')">
+
+                <li ng-repeat="f in followedBy | unique:'id'">
+
+                    <a ng-href="/#user/{{f.id}}/{{f.username}}"><img ng-src="{{f.profile_picture}}"/></a>
+                    <p>{{f.full_name}}</p>
+                    <p>{{f.bio}}</p>
+
+                </li>
+
+            </ul>
+
         </div>
 
     </div>
 
-    <error/>
+    <div error></div>
+    <div load-more></div>
 
 </div>

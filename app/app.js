@@ -1,5 +1,5 @@
 var app = angular.module('instagramApp', ['instagramApp.controllers', 'instagramService', 'ui.bootstrap', 'ui.router',
-    'Authentication', 'directives', 'ngCookies']);
+    'Authentication', 'directives', 'ngCookies', 'ui.unique']);
 
 app.constant('instagramApiConfig', {
         apiUrl: 'https://api.instagram.com/v1/',

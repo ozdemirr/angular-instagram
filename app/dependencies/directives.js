@@ -4,7 +4,7 @@ directives.directive('error', ['$rootScope', 'AuthenticationService', function (
 
     return {
 
-        template: '<div class="alert alert-danger" role="alert">{{errorMessage}}</div>',
+        templateUrl: 'views/templates/error.html',
         replace: true,
         link: function (scope, element, attr) {
 
@@ -23,12 +23,20 @@ directives.directive('error', ['$rootScope', 'AuthenticationService', function (
 
                     if ($rootScope.errorCodes[serviceMeta.code] == 2) {
 
-                        var authLink = AuthenticationService.getAuthLink();
+                        var authLink = $rootScope.authLink;
 
                         if(!AuthenticationService.isLoggedIn()) {
                             scope.errorMessage = "You have to <a href='" + authLink + "'>sign in with Instagram</a>";
                         }else{
-                            scope.errorMessage = "You have to follow this user";
+
+                               //hardcoded fix it
+                            if(serviceMeta.error_message == "The access_token provided is invalid.") {
+                                AuthenticationService.ClearCredentials();
+                                scope.errorMessage = "You have to <a href='" + authLink + "'>sign in with Instagram</a>";
+                            }else{
+                                scope.errorMessage = "You have to follow this user";
+                            }
+
                         }
 
                         element.html(scope.errorMessage);
@@ -45,5 +53,10 @@ directives.directive('error', ['$rootScope', 'AuthenticationService', function (
 
 }]);
 
+directives.directive('loadMore', function() {
+    return {
+        templateUrl: 'views/templates/load-more.html'
+    };
+});
 
 
