@@ -55,7 +55,35 @@ directives.directive('error', ['$rootScope', 'AuthenticationService', function (
 
 directives.directive('loadMore', function() {
     return {
-        templateUrl: 'views/templates/load-more.html'
+        templateUrl: 'views/templates/load-more.html',
+        link : function(scope, element, attr){
+
+            //handling multi layout on a template
+            scope.$watch('nextIterator', function (nextIterator) {
+
+                if(scope.layout) {
+
+                    if(scope.iterators[scope.layout] === undefined) {
+                        scope.iterators[scope.layout] = [];
+                    }
+
+                    if( scope.iterators[scope.layout].indexOf(nextIterator) == -1 && nextIterator) {
+                        scope.iterators[scope.layout].push(nextIterator);
+                    }
+
+                    if( parseInt(nextIterator) > parseInt(scope.iterators[scope.layout][scope.iterators[scope.layout].length -1]) ) {
+                        scope.nextIterator = scope.iterators[scope.layout][scope.iterators[scope.layout].length -1];
+                    }
+
+                    if(scope.usedNextIterators.indexOf(scope.nextIterator) > -1) {
+                        scope.nextIterator = false;
+                    }
+
+                }
+
+            });
+
+        }
     };
 });
 
