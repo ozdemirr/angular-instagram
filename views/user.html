@@ -31,7 +31,7 @@
     </div>
 
 
-    <div class="col-md-10" ng-show="isLayout('media')">
+    <div class="col-md-10" ng-show="isLayout('getRecentMedia')">
 
             <div class="col-md-3" ng-repeat="image in images | unique:'id'">
 
@@ -54,11 +54,11 @@
     </div>
 
 
-    <div class="col-md-10" ng-show="!isLayout('media')">
+    <div class="col-md-10" ng-show="!isLayout('getRecentMedia')">
 
         <div class="row container-fluid">
 
-            <ul class="list" class="col-md-12" ng-show="isLayout('following')">
+            <ul class="list" class="col-md-12" ng-show="isLayout('getFollows')">
 
                 <li ng-repeat="f in follows | unique:'id'">
 
@@ -70,7 +70,7 @@
 
             </ul>
 
-            <ul class="list" class="col-md-12" ng-show="isLayout('followed')">
+            <ul class="list" class="col-md-12" ng-show="isLayout('getFollowedBy')">
 
                 <li ng-repeat="f in followedBy | unique:'id'">
 

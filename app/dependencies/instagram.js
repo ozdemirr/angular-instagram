@@ -63,12 +63,12 @@ angular.module('instagramService', []).factory('instagramApi', function ($http) 
 
     };
 
-    instagram.getRecentMedia = function (userId, callback, nextMaxId) {
+    instagram.getRecentMedia = function (userId, callback, nextIterator) {
 
         endPoint = apiUrl + "users/" + userId + "/media/recent/?" + instagram.getAuth() + callbackString;
 
-        if(nextMaxId != null) {
-            endPoint = apiUrl + "users/" + userId + "/media/recent/?" + instagram.getAuth() + "&max_id=" + nextMaxId + callbackString;
+        if(nextIterator != null) {
+            endPoint = apiUrl + "users/" + userId + "/media/recent/?" + instagram.getAuth() + "&max_id=" + nextIterator + callbackString;
         }
 
         $http.jsonp(endPoint).success(function (response) {
@@ -116,11 +116,15 @@ angular.module('instagramService', []).factory('instagramApi', function ($http) 
     };
 
     //relationships
-    instagram.getFollows = function(userId, callback){
+    instagram.getFollows = function(userId, callback, nextIterator){
 
         if(userId == null) {userId = "self";}
 
         endPoint = apiUrl + "users/" + userId + "/follows?" + instagram.getAuth() + callbackString;
+
+        if(nextIterator != null) {
+            endPoint = apiUrl + "users/" + userId + "/follows?" + instagram.getAuth() + "&cursor="+ nextIterator + callbackString;
+        }
 
         $http.jsonp(endPoint).success(function (response) {
             callback(response);
@@ -128,11 +132,15 @@ angular.module('instagramService', []).factory('instagramApi', function ($http) 
 
     };
 
-    instagram.getFollowedBy = function(userId, callback){
+    instagram.getFollowedBy = function(userId, callback, nextIterator){
 
         if(userId == null) {userId = "self";}
 
         endPoint = apiUrl + "users/" + userId + "/followed-by?" + instagram.getAuth() + callbackString;
+
+        if(nextIterator != null) {
+            endPoint = apiUrl + "users/" + userId + "/followed-by?" + instagram.getAuth() + "&cursor="+ nextIterator + callbackString;
+        }
 
         $http.jsonp(endPoint).success(function (response) {
             callback(response);

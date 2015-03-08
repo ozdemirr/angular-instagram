@@ -78,7 +78,7 @@ var indexController = instagramAppControllers.controller('IndexController', func
 
             $scope.feed = $scope.feed.concat(response.data);
 
-            $scope.next_max_id = response.pagination.next_max_id;
+            $scope.nextIterator = response.pagination.next_max_id;
 
         }, nextMaxId);
 
@@ -86,7 +86,7 @@ var indexController = instagramAppControllers.controller('IndexController', func
 
     $scope.loadMore = function(){
 
-        $scope.refreshFeed($scope.next_max_id);
+        $scope.refreshFeed($scope.nextIterator);
 
     };
 
@@ -164,10 +164,9 @@ var UserSearchController = instagramAppControllers.controller('UserSearchControl
 
 var userController = instagramAppControllers.controller('userController', function ($scope, instagramApi, $stateParams) {
 
-    $scope.layout = 'media';
-
     $scope.setLayout = function (layout) {
         $scope.layout = layout;
+        $scope.nextIterator = false;
     };
 
     $scope.isLayout = function (layout) {
@@ -176,11 +175,19 @@ var userController = instagramAppControllers.controller('userController', functi
 
     $scope.userId = $stateParams.userId;
 
-    $scope.images = [];
-
     $scope.userName = $stateParams.userName;
 
+    $scope.images = [];
+
+    $scope.follows = [];
+
+    $scope.followedBy = [];
+
     $scope.serviceMeta = {};
+
+    $scope.usedNextIterators = [];
+
+    $scope.iterators = [];
 
     $scope.getUserProfile = function () {
 
@@ -200,9 +207,10 @@ var userController = instagramAppControllers.controller('userController', functi
 
     };
 
-    $scope.getRecentMedia = function (nextMaxId) {
+    $scope.getRecentMedia = function (nextIterator) {
 
-        $scope.setLayout('media');
+        //setting layout
+        $scope.setLayout('getRecentMedia');
 
         instagramApi.getRecentMedia($scope.userId, function (response) {
 
@@ -210,43 +218,51 @@ var userController = instagramAppControllers.controller('userController', functi
 
             $scope.images = $scope.images.concat(response.data);
 
-            $scope.next_max_id = response.pagination.next_max_id;
+            $scope.nextIterator = response.pagination.next_max_id;
 
-        }, nextMaxId);
+        }, nextIterator);
 
     };
 
-    $scope.getFollows = function(){
+    $scope.getFollows = function(nextIterator){
 
-        $scope.setLayout('following');
+        //setting layout
+        $scope.setLayout('getFollows');
 
         instagramApi.getFollows($scope.userId, function(response){
 
             $scope.serviceMeta = response.meta;
 
-            $scope.follows = response.data;
+            $scope.follows = $scope.follows.concat(response.data);
 
-        });
+            $scope.nextIterator = response.pagination.next_cursor;
+
+        }, nextIterator);
 
     };
 
-    $scope.getFollowedBy = function(){
+    $scope.getFollowedBy = function(nextIterator){
 
-        $scope.setLayout('followed');
+        //setting layout
+        $scope.setLayout('getFollowedBy');
 
         instagramApi.getFollowedBy($scope.userId, function(response){
 
             $scope.serviceMeta = response.meta;
 
-            $scope.followedBy = response.data;
+            $scope.followedBy = $scope.followedBy.concat(response.data);
 
-        });
+            $scope.nextIterator = response.pagination.next_cursor;
+
+        }, nextIterator);
 
     };
 
     $scope.loadMore = function(){
 
-        $scope.getRecentMedia($scope.next_max_id);
+        $scope.usedNextIterators.push($scope.nextIterator);
+
+        eval("$scope."+$scope.layout+"('"+$scope.nextIterator+"')");
 
     };
 
@@ -268,7 +284,7 @@ var mediaController = instagramAppControllers.controller('mediaController', func
             $scope.serviceMeta = response.meta;
 
             $scope.media = response.data;
-                    console.log($scope.media);
+//                    console.log($scope.media);
             instagramApi.getComments($scope.mediaId, function(response){
 
                 $scope.media.comments.data = response.data;
