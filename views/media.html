@@ -12,7 +12,7 @@
         <!--Comment and General Info Box-->
         <div class="col-md-5">
 
-            <div class="detailBox">
+            <div class="detailBox col-md-12">
                 <div class="titleBox">
                     <a ng-href="#/user/{{media.user.id}}/{{media.user.username}}"> <label style="cursor: pointer;">{{media.user.username}}</label> </a>
 
@@ -22,7 +22,6 @@
                     <p class="taskDescription">{{media.caption.text}}</p>
                     <p class="taskDescription">Filter : {{media.filter}}</p>
                     <a class="btn btn-primary" ng-href="{{media.images.standard_resolution.url}}" download>Download</a>
-                    <button class="btn btn-info" ng-click="giveLike(media.id)" ng-show="false">Like It</button>
                 </div>
 
                 <div class="likesBox">
@@ -58,6 +57,28 @@
                         <!--</div>-->
                     <!--</form>-->
                 </div>
+            </div>
+
+            <!--location-->
+            <div class="col-md-12" ng-if="map">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><a ng-href="#location/{{media.location.id}}">{{media.location.name}}</a></h3>
+                    </div>
+                    <div class="panel-body">
+
+                        <ui-gmap-google-map center='map.center' zoom='map.zoom' options="map.options"  map-type-id="MapTypeId.SATELLITE">
+
+                            <ui-gmap-marker coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id">
+                            </ui-gmap-marker>
+
+                        </ui-gmap-google-map>
+
+                    </div>
+                </div>
+
+
+
             </div>
 
         </div>

@@ -284,7 +284,33 @@ var mediaController = instagramAppControllers.controller('mediaController', func
             $scope.serviceMeta = response.meta;
 
             $scope.media = response.data;
-//                    console.log($scope.media);
+
+            if($scope.media.location) {
+
+                $scope.map = {
+
+                center:{latitude: $scope.media.location.latitude, longitude: $scope.media.location.longitude },
+
+                zoom: 19,
+
+                options : {
+
+                        mapTypeId : 'satellite'
+
+                    }
+
+                };
+
+                $scope.marker = {
+                    id: 0,
+                    coords: {
+                        latitude: $scope.media.location.latitude,
+                        longitude: $scope.media.location.longitude
+                    }
+                };
+
+            }
+
             instagramApi.getComments($scope.mediaId, function(response){
 
                 $scope.media.comments.data = response.data;
