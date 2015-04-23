@@ -10,6 +10,15 @@
 
                     <p>{{user.bio}}</p>
                 </div>
+
+                <div class="btn-group" role="group" ng-if="!isOwn(user.id)">
+
+                    <button type="button" class="btn btn-danger" ng-click="relationship(user.id, 'unfollow');relationshipData.following = false" ng-if="relationshipData.following">UnFollow</button>
+
+                    <button type="button" class="btn btn-primary" ng-click="relationship(user.id, 'follow');relationshipData.following = true" ng-if="!relationshipData.following">Follow</button>
+
+                </div>
+
             </div>
 
             <ul class="sidebar-nav">
@@ -62,9 +71,19 @@
 
                 <li ng-repeat="f in follows | unique:'id'">
 
+                    <div class="pull-left">
                     <a ng-href="#user/{{f.id}}/{{f.username}}"><img ng-src="{{f.profile_picture}}"/></a>
                     <p>{{f.full_name}}</p>
                     <p>{{f.bio}}</p>
+                    </div>
+
+                    <div class="btn-group pull-right" role="group" ng-if="isOwn(user.id)">
+
+                        <button type="button" class="btn btn-danger" ng-click="relationship(f.id, 'unfollow');f.unFollowShow=true;f.toBeFollowing=true" ng-if="!f.unFollowShow">UnFollow</button>
+
+                        <button type="button" class="btn btn-primary" ng-click="relationship(f.id, 'follow');f.unFollowShow=false;f.toBeFollowing=false" ng-if="f.toBeFollowing">Follow</button>
+
+                    </div>
 
                 </li>
 
@@ -74,9 +93,11 @@
 
                 <li ng-repeat="f in followedBy | unique:'id'">
 
+                    <div class="pull-left">
                     <a ng-href="#user/{{f.id}}/{{f.username}}"><img ng-src="{{f.profile_picture}}"/></a>
                     <p>{{f.full_name}}</p>
                     <p>{{f.bio}}</p>
+                    </div>
 
                 </li>
 

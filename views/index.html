@@ -26,7 +26,8 @@
                             <p class="taskDescription">{{media.caption.text}}</p>
                             <p class="taskDescription">Filter : {{media.filter}}</p>
                             <a class="btn btn-primary" ng-href="{{media.images.standard_resolution.url}}" download>Download</a>
-                            <button class="btn btn-info" ng-click="giveLike(media.id)" ng-show="false">Like It</button>
+                            <button class="btn btn-info" ng-click="giveLike(media.id)" ng-if="!media.user_has_liked">Like</button>
+                            <button class="btn btn-primary" ng-if="media.user_has_liked">Liked</button>
                         </div>
 
                         <div class="likesBox">
