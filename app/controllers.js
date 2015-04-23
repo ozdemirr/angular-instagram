@@ -29,6 +29,31 @@ var AppController = instagramAppControllers.controller('AppController', function
 
     }
 
+    //common method
+    $scope.giveLike = function(mediaId){
+
+        instagramApi.giveLike(mediaId);
+
+    }
+
+    $scope.isOwn = function(userId){
+
+        if( $scope.isLoggedIn ) {
+
+            if( AuthenticationService.getCurrentUser().userId == userId ) {
+
+                return true;
+
+            }
+
+        }else {
+
+            return false;
+
+        }
+
+    }
+
 });
 
 var navController = instagramAppControllers.controller('navController', function($scope, AuthenticationService, $location){
@@ -201,6 +226,22 @@ var userController = instagramAppControllers.controller('userController', functi
 
                 $scope.getRecentMedia();
 
+                if( $scope.isLoggedIn && !$scope.isOwn() ){
+
+                    instagramApi.relationship($scope.user.id, 'relationship', function(data) {
+
+                        $scope.relationshipData = {};
+
+                        if(data.data.outgoing_status == "follows"){
+
+                            $scope.relationshipData.following = true;
+
+                        }
+
+                    })
+
+                }
+
             }
 
         });
@@ -257,6 +298,13 @@ var userController = instagramAppControllers.controller('userController', functi
         }, nextIterator);
 
     };
+
+    $scope.relationship = function(userId, action){
+
+        instagramApi.relationship(userId, action);
+
+    };
+
 
     $scope.loadMore = function(){
 

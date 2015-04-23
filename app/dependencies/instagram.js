@@ -158,6 +158,30 @@ angular.module('instagramService', []).factory('instagramApi', function ($http) 
 
     };
 
+    instagram.relationship = function(userId, action, callback){
+
+        if(action == "relationship"){
+
+            endPoint = apiUrl + "users/" + userId + "/relationship?" + instagram.getAuth() + callbackString;
+
+            $http.jsonp(endPoint).success(function (response) {
+                callback(response);
+            });
+
+        }else{
+
+            $http({
+                method: 'POST',
+                url: apiUrl + "users/" + userId + "/relationship?" + instagram.getAuth(),
+                data: instagram.transform({access_token:_access_token, action:action}),
+                withCredentials: true,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            });
+
+        }
+
+    };
+
     //media
     instagram.fetchPopular = function (callback) {
 
@@ -223,16 +247,34 @@ angular.module('instagramService', []).factory('instagramApi', function ($http) 
 
     };
 
-    instagram.giveLike = function(mediaId, callback){
+    instagram.giveLike = function(mediaId){
 
-//        $http.post(apiUrl + "media/" + mediaId + "/likes?callback=JSON_CALLBACK", {access_token:_access_token}).
-//            success(function(data, status, headers, config) {
-//                callback(data)
-//            }).
-//            error(function(data, status, headers, config) {
-//                callback(data)
-//            });
+        $http({
+            method: 'POST',
+            url: apiUrl + "media/" + mediaId + "/likes",
+            data: instagram.transform({access_token:_access_token}),
+            withCredentials: true,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
 
+    };
+
+    instagram.transform = function(obj){
+        var str = [];
+        for (var key in obj) {
+            if (obj[key] instanceof Array) {
+                for(var idx in obj[key]){
+                    var subObj = obj[key][idx];
+                    for(var subKey in subObj){
+                        str.push(encodeURIComponent(key) + "[" + idx + "][" + encodeURIComponent(subKey) + "]=" + encodeURIComponent(subObj[subKey]));
+                    }
+                }
+            }
+            else {
+                str.push(encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]));
+            }
+        }
+        return str.join("&");
     };
 
     //errors
