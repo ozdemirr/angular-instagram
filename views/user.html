@@ -11,7 +11,7 @@
                     <p>{{user.bio}}</p>
                 </div>
 
-                <div class="btn-group" role="group" ng-if="!isOwn(user.id)">
+                <div class="btn-group" role="group" ng-if="!isOwn(user.id) && isLoggedIn()">
 
                     <button type="button" class="btn btn-danger" ng-click="relationship(user.id, 'unfollow');relationshipData.following = false" ng-if="relationshipData.following">UnFollow</button>
 
