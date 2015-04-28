@@ -44,6 +44,13 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
             controller: "searchTagController"
         })
 
+        .state('searchMap', {
+            url: "/searchMap",
+            templateUrl: "views/searchMap.html",
+            data: {pageTitle: 'Search Map', pageSubTitle: ''},
+            controller: "searchMapController"
+        })
+
         .state("tag", {
             url: "/tag/:tagName",
             templateUrl: "views/tag.html",

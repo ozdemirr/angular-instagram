@@ -259,6 +259,19 @@ angular.module('instagramService', []).factory('instagramApi', function ($http) 
 
     };
 
+    //locations
+
+    instagram.getMediaByLocation = function(lat, lng, radius, minTimestamp, callback){
+
+        endPoint = apiUrl + "media/search?lat=" + lat + "&lng=" + lng + "&distance=" + radius + "&min_timestamp=" + minTimestamp + "&" + instagram.getAuth() + callbackString;
+
+        $http.jsonp(endPoint).success(function (response) {
+            callback(response);
+        });
+
+    }
+
+
     instagram.transform = function(obj){
         var str = [];
         for (var key in obj) {

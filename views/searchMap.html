@@ -1,0 +1,73 @@
+<div ng-controller="searchMapController" ng-init="createInterval();">
+
+    <div class="row">
+
+        <progressbar class="progress-striped active" value="progress" type="success"> <i>Refreshing</i></progressbar>
+
+    <div id="map_canvas" class="col-md-10">
+        <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" options="options">
+
+            <ui-gmap-circle center="circle.center" stroke="circle.stroke" fill="circle.fill"
+                            radius="circle.radius"
+                            visible="circle.visible" geodesic="circle.geodesic" editable="circle.editable" draggable="circle.draggable"
+                            clickable="circle.clickable" control="circle.control" events='circle.events'>
+
+            </ui-gmap-circle>
+
+            <ui-gmap-search-box template="searchbox.template" events="searchbox.events"></ui-gmap-search-box>
+
+        </ui-gmap-google-map>
+    </div>
+
+        <div class="col-md-2">
+
+            <div class="col-md-6">
+            <div class="btn-group" dropdown is-open="status.isopen">
+                <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle>
+                    Layout <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a href="" ng-click="setLayout('list')">
+                            <span class="glyphicon glyphicon-ok" ng-if="isLayout('list')"></span>
+                            List
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+
+            </div>
+
+            <div class="col-md-6">
+            <button type="button" class="btn btn-success" ng-click="clearAll()">
+                Clear
+            </button>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="intervalModel">Refresh Period (Seconds)</label>
+                    <input type="number" class="form-control" id="intervalModel" ng-model="refreshInterval">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <hr/>
+
+    <div class="row">
+
+    <ul class="grid" style="width:auto;" ng-if="isLayout('list')">
+
+        <li ng-repeat="image in images | unique:'id' | orderBy:'-$$hashKey'">
+            <a ng-href="#media/{{image.id}}/{{image.type}}"><img ng-src="{{image.images.low_resolution.url}}"/></a>
+
+        </li>
+    </ul>
+
+    </div>
+
+</div>
