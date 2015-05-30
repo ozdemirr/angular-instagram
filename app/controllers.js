@@ -511,9 +511,9 @@ var searchMapController = instagramAppControllers.controller('searchMapControlle
 
     $scope.createInterval = function(){
 
-        $scope.getMediaByLocation();
-
         $scope.cancelInterval();
+
+        $scope.getMediaByLocation();
 
         $scope.interval = $interval(function(){
 
