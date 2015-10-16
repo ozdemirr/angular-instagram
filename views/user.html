@@ -46,7 +46,8 @@
 
                 <div class="thumbnail">
 
-                    <a class="thumbnail" ng-href="#media/{{image.id}}/{{image.type}}">
+                    <a class="thumbnail" ng-href="#media/{{image.id}}/{{image.type}}"
+                       ga-track-event="['Media', image.id]">
                         <img ng-src="{{image.images.low_resolution.url}}">
                     </a>
 
