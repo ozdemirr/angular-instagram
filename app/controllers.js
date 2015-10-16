@@ -1,6 +1,6 @@
 var instagramAppControllers = angular.module('instagramApp.controllers', []);
 
-var AppController = instagramAppControllers.controller('AppController', function ($rootScope, $scope, $state, AuthenticationService, instagramApi) {
+var AppController = instagramAppControllers.controller('AppController', function ($rootScope, $scope, $state, AuthenticationService, instagramApi,Analytics) {
 
     $scope.isLoggedIn = function(){
 
@@ -167,7 +167,7 @@ var popularController = instagramAppControllers.controller('popularController', 
 
 });
 
-var UserSearchController = instagramAppControllers.controller('UserSearchController', function ($scope, instagramApi) {
+var UserSearchController = instagramAppControllers.controller('UserSearchController', function ($scope, instagramApi,Analytics) {
 
     $scope.users = [];
 
@@ -176,6 +176,8 @@ var UserSearchController = instagramAppControllers.controller('UserSearchControl
     $scope.search = function () {
 
         instagramApi.searchUser($scope.username, function (response) {
+
+            Analytics.trackEvent('UserSearch', $scope.username);
 
             $scope.serviceMeta = response.meta;
 
@@ -416,7 +418,7 @@ var tagController = instagramAppControllers.controller('tagController', function
 
 });
 
-var searchMapController = instagramAppControllers.controller('searchMapController', function ($scope, instagramApi, $interval) {
+var searchMapController = instagramAppControllers.controller('searchMapController', function ($scope, instagramApi, $interval, Analytics) {
 
     $scope.serviceMeta = {};
 
@@ -467,6 +469,8 @@ var searchMapController = instagramAppControllers.controller('searchMapControlle
     $scope.min_timestamp = "";
 
     $scope.getMediaByLocation = function(){
+
+        Analytics.trackEvent('Maps', $scope.circle.center.latitude + "," +$scope.circle.center.longitude);
 
         instagramApi.getMediaByLocation($scope.circle.center.latitude, $scope.circle.center.longitude, $scope.circle.radius, $scope.min_timestamp, function(response){
 
