@@ -26,8 +26,6 @@
                             <p class="taskDescription">{{media.caption.text}}</p>
                             <p class="taskDescription">Filter : {{media.filter}}</p>
                             <a class="btn btn-primary" ng-href="{{media.images.standard_resolution.url}}" download>Download</a>
-                            <button class="btn btn-info" ng-click="giveLike(media.id);media.user_has_liked=true" ng-if="!media.user_has_liked">Like</button>
-                            <button class="btn btn-primary" ng-if="media.user_has_liked">Liked</button>
                         </div>
 
                         <div class="likesBox">
@@ -83,7 +81,8 @@
                     <div class="social-box">
                         <div class="row mg-btm">
                             <div class="col-md-12">
-                                <a ng-href="{{authLink}}" class="btn btn-primary btn-block">
+                                <a ng-href="{{authLink}}" class="btn btn-primary btn-block"
+                                   ga-track-event="['User','Login Attempt']">
                                     <i class="icon-facebook"></i> Login with Instagram
                                 </a>
                             </div>

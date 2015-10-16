@@ -64,7 +64,8 @@
 
     <ul class="grid" style="width:auto;" ng-if="isLayout('list')">
 
-        <li ng-repeat="image in images | unique:'id' | orderBy:'-$$hashKey'">
+        <li ng-repeat="image in images | unique:'id' | orderBy:'-$$hashKey'"
+            ga-track-event="['Media', image.id]">
             <a ng-href="#media/{{image.id}}/{{image.type}}"><img ng-src="{{image.images.low_resolution.url}}"/></a>
 
         </li>

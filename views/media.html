@@ -14,14 +14,16 @@
 
             <div class="detailBox col-md-12">
                 <div class="titleBox">
-                    <a ng-href="#/user/{{media.user.id}}/{{media.user.username}}"> <label style="cursor: pointer;">{{media.user.username}}</label> </a>
+                    <a ng-href="#/user/{{media.user.id}}/{{media.user.username}}"
+                       ga-track-event="['UserPage', media.user.username]"> <label style="cursor: pointer;">{{media.user.username}}</label> </a>
 
                 </div>
                 <div class="commentBox">
                     <p class="taskDescription" ng-if="media.created_time">{{media.created_time * 1000 | date:'MMM d, y HH:mm:ss'}}</p>
                     <p class="taskDescription">{{media.caption.text}}</p>
                     <p class="taskDescription">Filter : {{media.filter}}</p>
-                    <a class="btn btn-primary" ng-href="{{media.images.standard_resolution.url}}" download>Download</a>
+                    <a class="btn btn-primary" ng-href="{{media.images.standard_resolution.url}}" download
+                       ga-track-event="['Download', media.id]">Download</a>
                 </div>
 
                 <div class="likesBox">
